@@ -1,10 +1,12 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 interface MQTTContextData {}
 
 const MQTTContext = createContext<MQTTContextData>({} as MQTTContextData);
 
 const MQTTProvider: React.FC = ({ children }) => {
+  const [connections, setConnections] = useState();
+
   return <MQTTContext.Provider value={{}}>{children}</MQTTContext.Provider>;
 };
 

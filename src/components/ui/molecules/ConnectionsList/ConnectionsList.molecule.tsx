@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Center, SimpleGrid, useToast } from '@chakra-ui/react';
+import { Center, SimpleGrid, Spinner, useToast } from '@chakra-ui/react';
 
 import { ConnectionCard } from '@/components/ui/atoms';
 
@@ -10,7 +10,7 @@ export const ConnectionsList: React.FC = () => {
   const [isSSR, setIsSSR] = useState(true);
 
   const client_id = useMemo(() => {
-    if (!isSSR) return `mqtt-client-${Date.now()}`;
+    if (!isSSR) return `mqtt-client-${Math.random().toString(16).slice(3)}`;
   }, [isSSR]);
 
   useEffect(() => {
@@ -34,17 +34,15 @@ export const ConnectionsList: React.FC = () => {
   return (
     <>
       <Center h="100%" w="100%">
-        <SimpleGrid flex="1" gap="10" minChildWidth="220px">
-          {!connections.length && (
-            <ConnectionCard
-              client_id={client_id}
-              title="Test Connection"
-              uri="wss://test.mosquitto.org"
-              port="8081"
-              connection_type="SUBSCRIPTION"
-            />
-          )}
-        </SimpleGrid>
+        {isSSR ? (
+          <Spinner />
+        ) : (
+          <SimpleGrid flex="1" gap="10" minChildWidth="220px">
+            {!connections.length && (
+              <ConnectionCard client_id={client_id} title="Test Connection" uri="wss://test.mosquitto.org/mqtt" port="8081" />
+            )}
+          </SimpleGrid>
+        )}
       </Center>
     </>
   );

@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
-import { CreateConnectionFormInput } from '@/components/ui/atoms';
+import { CreateConnectionFormInput, CreateConnectionFormNumberInput } from '@/components/ui/atoms';
 import { CreateConnectionFormData } from './CreateConnectionFormData';
 
 const createConnectionFormSchema = Yup.object().shape({
@@ -60,10 +60,10 @@ export const CreateConnectionModal: React.FC<CreateConnectionModalProps> = ({ is
             name="uri"
             label="URI"
             error={errors.uri?.message}
-            placeholder="mqtt://test.mosqu..."
+            placeholder="mqtt://test.mosquitto.org"
             mb="3"
           />
-          <CreateConnectionFormInput register={register} name="port" error={errors.port?.message} label="Port" placeholder="1234" mb="3" />
+          <CreateConnectionFormNumberInput register={register} name="port" error={errors.port?.message} label="Port" placeholder="1883" />
           <CreateConnectionFormInput
             register={register}
             name="username"

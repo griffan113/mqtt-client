@@ -1,4 +1,4 @@
-import { Box, HStack, Stack, Text } from '@chakra-ui/react';
+import { LinkBox, Box, HStack, Stack, Text } from '@chakra-ui/react';
 import React from 'react';
 import { VscCircuitBoard } from 'react-icons/vsc';
 
@@ -11,7 +11,7 @@ type ConnectionCardProps = {
 
 export const ConnectionCard: React.FC<ConnectionCardProps> = ({ title, client_id, uri, port }) => {
   return (
-    <Box
+    <LinkBox
       as="a"
       cursor="pointer"
       bg="gray.100"
@@ -49,6 +49,6 @@ export const ConnectionCard: React.FC<ConnectionCardProps> = ({ title, client_id
           <Text>{port}</Text>
         </Box>
       </Stack>
-    </Box>
+    </LinkBox>
   );
 };
