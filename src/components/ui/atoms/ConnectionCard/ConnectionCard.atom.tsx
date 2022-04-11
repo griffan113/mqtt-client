@@ -1,24 +1,15 @@
 import { Box, HStack, Stack, Text } from '@chakra-ui/react';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { VscCircuitBoard } from 'react-icons/vsc';
-
-import { ConnectionType } from '@/src/types/ConnectionType';
 
 type ConnectionCardProps = {
   client_id: string | undefined;
   title: string;
   uri: string;
   port: string;
-  connection_type: ConnectionType;
 };
 
-export const ConnectionCard: React.FC<ConnectionCardProps> = ({ title, client_id, uri, port, connection_type }) => {
-  const parsedConnectionType = useMemo(() => {
-    if (connection_type === 'BOTH') return 'Publish & Subscribe';
-    else if (connection_type === 'PUBLICATION') return 'Publish';
-    else return 'Subscribe';
-  }, [connection_type]);
-
+export const ConnectionCard: React.FC<ConnectionCardProps> = ({ title, client_id, uri, port }) => {
   return (
     <Box
       as="a"
@@ -56,12 +47,6 @@ export const ConnectionCard: React.FC<ConnectionCardProps> = ({ title, client_id
             PORT
           </Text>
           <Text>{port}</Text>
-        </Box>
-        <Box>
-          <Text fontWeight="bold" fontSize="sm" color="gray.500">
-            TYPE
-          </Text>
-          <Text>{parsedConnectionType}</Text>
         </Box>
       </Stack>
     </Box>

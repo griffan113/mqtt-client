@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
-import { CreateConnectionFormInput, CreateConnectionFormSelect } from '@/components/ui/atoms';
+import { CreateConnectionFormInput } from '@/components/ui/atoms';
 import { CreateConnectionFormData } from './CreateConnectionFormData';
 
 const createConnectionFormSchema = Yup.object().shape({
@@ -15,7 +15,8 @@ const createConnectionFormSchema = Yup.object().shape({
     .transform(value => (isNaN(value) ? undefined : value))
     .positive()
     .required('Port is required'),
-  connection_type: Yup.string().required(),
+  username: Yup.string().optional(),
+  password: Yup.string().optional(),
 });
 
 type CreateConnectionModalProps = {
@@ -59,11 +60,26 @@ export const CreateConnectionModal: React.FC<CreateConnectionModalProps> = ({ is
             name="uri"
             label="URI"
             error={errors.uri?.message}
-            placeholder="wss://test.mosqu..."
+            placeholder="mqtt://test.mosqu..."
             mb="3"
           />
           <CreateConnectionFormInput register={register} name="port" error={errors.port?.message} label="Port" placeholder="1234" mb="3" />
-          <CreateConnectionFormSelect register={register} name="connection_type" label="Connection Type" />
+          <CreateConnectionFormInput
+            register={register}
+            name="username"
+            label="Username"
+            error={errors.username?.message}
+            placeholder="admin"
+            mb="3"
+          />
+          <CreateConnectionFormInput
+            register={register}
+            name="password"
+            label="Password"
+            error={errors.password?.message}
+            placeholder="****"
+            type="password"
+          />
         </ModalBody>
 
         <ModalFooter>
