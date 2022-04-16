@@ -3,7 +3,6 @@ export interface IConnection {
   client_id: string;
   title: string;
   uri: string;
-  port: number;
   username?: string;
   password?: string;
 }

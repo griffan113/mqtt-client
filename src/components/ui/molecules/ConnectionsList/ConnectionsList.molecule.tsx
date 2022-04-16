@@ -39,7 +39,7 @@ export const ConnectionsList: React.FC = () => {
         ) : (
           <SimpleGrid flex="1" gap="10" minChildWidth="220px">
             {!connections.length && (
-              <ConnectionCard client_id={client_id} title="Test Connection" uri="wss://test.mosquitto.org/mqtt" port="8081" />
+              <ConnectionCard client_id={client_id} title="Test Connection" uri="wss://test.mosquitto.org:8081/mqtt" />
             )}
           </SimpleGrid>
         )}

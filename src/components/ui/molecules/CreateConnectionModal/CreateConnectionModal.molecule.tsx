@@ -1,20 +1,19 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Button, HStack, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text } from '@chakra-ui/react';
 import { VscCircuitBoard } from 'react-icons/vsc';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
-import { CreateConnectionFormInput, CreateConnectionFormNumberInput } from '@/components/ui/atoms';
+import { CreateConnectionFormInput } from '@/components/ui/atoms';
 import { CreateConnectionFormData } from './CreateConnectionFormData';
+import { useMQTT } from '@/src/hooks/mqtt';
 
 const createConnectionFormSchema = Yup.object().shape({
   title: Yup.string().required('Title is required'),
-  uri: Yup.string().url('URI must be a valid URL').required('URI is required'),
-  port: Yup.number()
-    .transform(value => (isNaN(value) ? undefined : value))
-    .positive()
-    .required('Port is required'),
+  uri: Yup.string()
+    .matches(/^(mqtt|ws|wss):\/\/[^ "]+$/, 'Must be a websocket or a mqtt connection')
+    .required('URI is required'),
   username: Yup.string().optional(),
   password: Yup.string().optional(),
 });
@@ -25,6 +24,8 @@ type CreateConnectionModalProps = {
 };
 
 export const CreateConnectionModal: React.FC<CreateConnectionModalProps> = ({ isOpen, onClose }) => {
+  const { CreateConnection } = useMQTT();
+
   const {
     register,
     handleSubmit,
@@ -32,7 +33,13 @@ export const CreateConnectionModal: React.FC<CreateConnectionModalProps> = ({ is
     formState: { errors, isSubmitting },
   } = useForm<CreateConnectionFormData>({ resolver: yupResolver(createConnectionFormSchema) });
 
-  const onSubmit: SubmitHandler<CreateConnectionFormData> = data => console.log(data);
+  const onSubmit: SubmitHandler<CreateConnectionFormData> = useCallback(
+    async data => {
+      console.log(data);
+      await CreateConnection(data);
+    },
+    [CreateConnection],
+  );
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
@@ -60,10 +67,9 @@ export const CreateConnectionModal: React.FC<CreateConnectionModalProps> = ({ is
             name="uri"
             label="URI"
             error={errors.uri?.message}
-            placeholder="mqtt://test.mosquitto.org"
+            placeholder="mqtt://test.mosquitto.org:8081"
             mb="3"
           />
-          <CreateConnectionFormNumberInput register={register} name="port" error={errors.port?.message} label="Port" placeholder="1883" />
           <CreateConnectionFormInput
             register={register}
             name="username"

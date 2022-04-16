@@ -6,10 +6,9 @@ type ConnectionCardProps = {
   client_id: string | undefined;
   title: string;
   uri: string;
-  port: string;
 };
 
-export const ConnectionCard: React.FC<ConnectionCardProps> = ({ title, client_id, uri, port }) => {
+export const ConnectionCard: React.FC<ConnectionCardProps> = ({ title, client_id, uri }) => {
   return (
     <LinkBox
       as="a"
@@ -41,12 +40,6 @@ export const ConnectionCard: React.FC<ConnectionCardProps> = ({ title, client_id
             URI
           </Text>
           <Text>{uri}</Text>
-        </Box>
-        <Box>
-          <Text fontWeight="bold" fontSize="sm" color="gray.500">
-            PORT
-          </Text>
-          <Text>{port}</Text>
         </Box>
       </Stack>
     </LinkBox>
